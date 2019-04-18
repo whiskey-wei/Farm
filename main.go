@@ -2,19 +2,13 @@ package main
 
 import (
 	"farm/pkg/setting"
+	"farm/routers"
 	"fmt"
 	"net/http"
-
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/test", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "test",
-		})
-	})
+	router := routers.InitRouter()
 	s := &http.Server{
 		Addr:           fmt.Sprintf(":%s", setting.HttpPort),
 		Handler:        router,

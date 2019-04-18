@@ -25,8 +25,6 @@ func init() {
 	}
 	LoadBase()
 	LoadServer()
-
-	LoadApp()
 }
 
 func LoadBase() {
@@ -43,8 +41,4 @@ func LoadServer() {
 	HttpPort = sec.Key("HTTP_PORT").MustString("8080")
 	ReadTimeout = time.Duration(sec.Key("READ_TIMEOUT").MustInt(60)) * time.Second
 	WriteTimeout = time.Duration(sec.Key("WRITE_TIMEOUT").MustInt(60)) * time.Second
-}
-
-func LoadApp() {
-
 }
