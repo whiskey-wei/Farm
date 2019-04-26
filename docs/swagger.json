@@ -1,0 +1,480 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "{{.Description}}",
+        "title": "{{.Title}}",
+        "contact": {},
+        "license": {},
+        "version": "{{.Version}}"
+    },
+    "host": "{{.Host}}",
+    "basePath": "{{.BasePath}}",
+    "paths": {
+        "/api/v1/calves": {
+            "get": {
+                "description": "每页20个记录，在路径中添加?page=x表示获取第x页的数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取一页产犊记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "页号",
+                        "name": "page",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "请求成功会返回id,cow_id,fetus_organ,is_complete,is_abortion,yak_id,yak_index,milk_production,cream,protein,birth_time,flowing_time,fetus_time,fetus_birth_time,placenta_time",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    "500": {
+                        "description": "fail",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "新增产犊记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "新增产犊记录",
+                "parameters": [
+                    {
+                        "description": "母牛号",
+                        "name": "cow_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "犊牛号",
+                        "name": "yak_id",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "胎衣排出是否完整,只能是1,2",
+                        "name": "is_complete",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "是否流产或者难产,只能是1,2",
+                        "name": "is_abortion",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "露出阴门的胎儿器官",
+                        "name": "fetus_organ",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "分娩日期 格式为2006-01-02 15:04:05 正则表达式严格匹配",
+                        "name": "birth_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "阴道开始流水日期 格式为2006-01-02 15:04:05 正则表达式严格匹配",
+                        "name": "flowint_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "胎儿露出阴门时间 格式为2006-01-02 15:04:05 正则表达式严格匹配",
+                        "name": "fetus_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "胎儿娩出时间",
+                        "name": "fetus_birth_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "胎盘排出时间",
+                        "name": "placenta_time",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "犊牛相关指数,未确定计算方法,先任意输入",
+                        "name": "yak_index",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "泌乳期产奶量,未确定计算方法,先任意输入",
+                        "name": "milk_production",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "乳脂量,未确定计算方法,先任意输入",
+                        "name": "cream",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "乳蛋白量,未确定计算方法,先任意输入",
+                        "name": "protein",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "10001": {
+                        "description": "该记录已经存在",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "10003": {
+                        "description": "时间格式出错",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/calves/{cow_id}": {
+            "get": {
+                "description": "通过cow_id获取",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "获取产犊记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "母牛号",
+                        "name": "cow_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "10002": {
+                        "description": "该数据不存在",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/calves/{id}": {
+            "put": {
+                "description": "通过id更新数据",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "更新数据",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "这个id与cow_id不同，是数据库中的自增主键，在请求数据的时候，这个id会发送到前端,可在前端设置隐藏数据保存这个id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "母牛号",
+                        "name": "cow_id",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "犊牛号",
+                        "name": "yak_id",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "胎衣排出是否完整,只能是1,2",
+                        "name": "is_complete",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "是否流产或者难产,只能是1,2",
+                        "name": "is_abortion",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/int"
+                        }
+                    },
+                    {
+                        "description": "露出阴门的胎儿器官",
+                        "name": "fetus_organ",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "分娩日期 格式为2006-01-02 15:04:05 正则表达式严格匹配",
+                        "name": "birth_time",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "阴道开始流水日期 格式为2006-01-02 15:04:05 正则表达式严格匹配",
+                        "name": "flowint_time",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "胎儿露出阴门时间 格式为2006-01-02 15:04:05 正则表达式严格匹配",
+                        "name": "fetus_time",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "胎儿娩出时间",
+                        "name": "fetus_birth_time",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "胎盘排出时间",
+                        "name": "placenta_time",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "犊牛相关指数,未确定计算方法,先任意输入",
+                        "name": "yak_index",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "泌乳期产奶量,未确定计算方法,先任意输入",
+                        "name": "milk_production",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "乳脂量,未确定计算方法,先任意输入",
+                        "name": "cream",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    },
+                    {
+                        "description": "乳蛋白量,未确定计算方法,先任意输入",
+                        "name": "protein",
+                        "in": "body",
+                        "schema": {
+                            "type": "object",
+                            "$ref": "#/definitions/string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "10002": {
+                        "description": "该记录不存在",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "10003": {
+                        "description": "时间格式出错",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "通过id删除产犊记录",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "删除产犊记录",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "这个id与cow_id不同，是数据库中的自增主键，在请求数据的时候，这个id会发送到前端,可在前端设置隐藏数据保存这个id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "10001": {
+                        "description": "该记录不存在",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "请求参数错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

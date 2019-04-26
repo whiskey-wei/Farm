@@ -4,7 +4,7 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type CalveRecord struct {
+type CalveRecord struct { //产犊记录
 	Id             int     `gorm:"primary_key" json:"id"`
 	CowId          int     `json:"cow_id"`           //母牛号
 	FetusOrgan     string  `json:"fetus_organ"`      //露出阴门的胎儿器官
@@ -16,7 +16,7 @@ type CalveRecord struct {
 	Cream          float64 `json:"cream"`            //乳脂量
 	Protein        float64 `json:"protein"`          //乳蛋白量
 	BirthTime      string  `json:"birth_time"`       //分娩日期
-	FlowingTime    string  `json:"flowint_time"`     //阴道开始流水日期
+	FlowingTime    string  `json:"flowing_time"`     //阴道开始流水日期
 	FetusTime      string  `json:"fetus_time"`       //胎儿露出阴门时间
 	FetusBirthTime string  `json:"fetus_birth_time"` //胎儿娩出时间
 	PlacentaTime   string  `json:"placenta_time"`    //胎盘排出时间

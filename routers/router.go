@@ -5,7 +5,17 @@ import (
 	v1 "farm/routers/api/v1"
 
 	"github.com/gin-gonic/gin"
+
+	_ "farm/docs"
+
+	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
+
+// @title Swagger Example API
+// @version 0.0.1
+// @description  This is a sample server Petstore server.
+// @BasePath /api/v1/
 
 func InitRouter() *gin.Engine {
 	r := gin.New()
@@ -20,5 +30,7 @@ func InitRouter() *gin.Engine {
 		apiv1_calve.PUT("/:id", v1.UpdateCalve)
 		apiv1_calve.DELETE("/:id", v1.DeleteCalve)
 	}
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }
