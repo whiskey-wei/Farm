@@ -12,13 +12,13 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	gin.SetMode(setting.RunMode)
-	apiv1 := r.Group("/api/v1")
+	apiv1_calve := r.Group("/api/v1/calves")
 	{
-		apiv1.GET("/calves", v1.GetCalves)
-		apiv1.GET("/calves/:id", v1.GetCalve)
-		apiv1.POST("/calves", v1.AddCalve)
-		apiv1.PUT("/calves/:id", v1.UpdateCalve)
-		apiv1.DELETE("/calves/:id", v1.DeleteCalve)
+		apiv1_calve.GET("", v1.GetCalves)
+		apiv1_calve.GET("/:cow_id", v1.GetCalve)
+		apiv1_calve.POST("", v1.AddCalve)
+		apiv1_calve.PUT("/:id", v1.UpdateCalve)
+		apiv1_calve.DELETE("/:id", v1.DeleteCalve)
 	}
 	return r
 }

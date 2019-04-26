@@ -5,6 +5,7 @@ import (
 )
 
 type CalveRecord struct {
+	Id             int     `gorm:"primary_key" json:"id"`
 	CowId          int     `json:"cow_id"`           //母牛号
 	FetusOrgan     string  `json:"fetus_organ"`      //露出阴门的胎儿器官
 	IsComplete     int     `json:"is_complete"`      //胎衣排出是否完整
@@ -21,7 +22,7 @@ type CalveRecord struct {
 	PlacentaTime   string  `json:"placenta_time"`    //胎盘排出时间
 } //产犊记录
 
-func ExistCalveByID(id int) bool {
+func ExistCalveByCowID(id int) bool {
 	var calverecord CalveRecord
 	db.Select("cow_id").Where("cow_id = ?", id).First(&calverecord)
 
@@ -29,6 +30,15 @@ func ExistCalveByID(id int) bool {
 		return true
 	}
 
+	return false
+}
+
+func ExistCalveByID(id int) bool {
+	var calve CalveRecord
+	db.Select("id").Where("id = ?", id).First(&calve)
+	if calve.Id > 0 {
+		return true
+	}
 	return false
 }
 
@@ -49,35 +59,22 @@ func GetCalves(pageNum int, pageSize int, maps interface{}) (calves []CalveRecor
 	return
 }
 
-func GetCalve(id int) (calve CalveRecord) {
-	db.Where("cow_id = ?", id).First(&calve)
+func GetCalve(CowId int) (calves []CalveRecord) {
+	db.Where("cow_id = ?", CowId).Find(&calves)
 	return
 }
 
 func AddCalve(calve CalveRecord) bool {
-	if ExistCalveByID(calve.CowId) {
-		return false
-	} else {
-		err := db.Create(&calve).Error
-		if err != nil {
-			return false
-		}
-		return true
-	}
+	db.Create(&calve)
+	return true
 }
 
-func UpdateCalve(id int, data interface{}) bool {
-	err := db.Model(&CalveRecord{}).Where("cow_id = ?", id).Update(data)
-	if err != nil {
-		return false
-	}
+func UpdateCalve(id int, calve CalveRecord) bool {
+	db.Model(&CalveRecord{}).Where("id = ?", id).Update(calve)
 	return true
 }
 
 func DeleteCalve(id int) bool {
-	err := db.Where("cow_id = ?", id).Delete(&CalveRecord{}).Error
-	if err != nil {
-		return false
-	}
+	db.Where("id = ?", id).Delete(&CalveRecord{})
 	return true
 }

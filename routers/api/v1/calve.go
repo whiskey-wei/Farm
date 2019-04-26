@@ -14,19 +14,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//获取指定id的母牛的产犊记录
+//获取指定cowid的母牛的产犊记录
 func GetCalve(c *gin.Context) {
-	id := com.StrTo(c.Param("id")).MustInt()
+	CowId := com.StrTo(c.Param("cow_id")).MustInt()
 
 	valid := validation.Validation{}
-	valid.Min(id, 1, "id").Message("ID必须大于0")
+	valid.Min(CowId, 1, "cow_id").Message("cow_id必须大于0")
 
 	code := e.INVALID_PARAMS
 	var data interface{}
 
 	if !valid.HasErrors() {
-		if model.ExistCalveByID(id) {
-			data = model.GetCalve(id)
+		if model.ExistCalveByCowID(CowId) {
+			data = model.GetCalve(CowId)
 			code = e.SUCCESS
 		} else {
 			code = e.ERROR_NOT_EXIST
@@ -72,86 +72,31 @@ func GetCalves(c *gin.Context) {
 
 //新增产犊记录
 func AddCalve(c *gin.Context) {
-	BirthTime := c.PostForm("birth_time")
-	FlowingTime := c.PostForm("flowing_time")
-	FetusTime := c.PostForm("fetus_time")
-	FetusBirthTime := c.PostForm("fetus_birth_time")
-	PlacentaTime := c.PostForm("placenta_time")
 
+	//log.Println("add calve")
+	calve := util.GetCalveForm(c)
+	//log.Println("get map")
 	code := e.INVALID_PARAMS
-	valid := validation.Validation{}
 
 	//判断时间格式
-	var err error
-	_, err = util.HandleTime(BirthTime)
-	if err != nil {
+	if !util.CheckTime(calve.FetusBirthTime) || !util.CheckTime(calve.FetusTime) ||
+		!util.CheckTime(calve.FlowingTime) || !util.CheckTime(calve.PlacentaTime) {
 		code = e.ERROR_TIME_FORMAT
-		log.Println("birth_time")
-	} else {
-		_, err = util.HandleTime(FlowingTime)
-		if err != nil {
-			code = e.ERROR_TIME_FORMAT
-			log.Println("flowing_time")
-		} else {
-			_, err = util.HandleTime(FetusTime)
-			if err != nil {
-				code = e.ERROR_TIME_FORMAT
-				log.Println("fetus_time")
-			} else {
-				_, err = util.HandleTime(FetusBirthTime)
-				if err != nil {
-					code = e.ERROR_TIME_FORMAT
-					log.Println("fetus_birth_time")
-				} else {
-					_, err = util.HandleTime(PlacentaTime)
-					if err != nil {
-						code = e.ERROR_TIME_FORMAT
-						log.Println("placenta_time")
-					}
-				}
-			}
-		}
 	}
 	if code == e.INVALID_PARAMS {
-		CowId := com.StrTo(c.PostForm("cow_id")).MustInt()
-		FetusOrgan := c.PostForm("fetus_organ")
-		IsComplete := com.StrTo(c.PostForm("is_complete")).MustInt()
-		IsAbortion := com.StrTo(c.PostForm("is_abortion")).MustInt()
-		YakId := com.StrTo(c.PostForm("yak_id")).MustInt()
-		YakIndex := com.StrTo(c.PostForm("yak_index")).MustFloat64()
-		MilkProduction := com.StrTo(c.PostForm("milk_production")).MustFloat64()
-		Cream := com.StrTo(c.PostForm("cream")).MustFloat64()
-		Protein := com.StrTo(c.PostForm("protein")).MustFloat64()
+		valid := validation.Validation{}
+		valid.Min(calve.CowId, 1, "cow_id").Message("cow_id应该大于0")
+		valid.Min(calve.YakId, 1, "yak_id").Message("yak_id应该大于0")
+		valid.Range(calve.IsComplete, 1, 2, "is_complete").Message("is_complete只能是1,2")
+		valid.Range(calve.IsAbortion, 1, 2, "is_abortion").Message("is_abortion只能是1,2")
+		valid.Required(calve.FetusOrgan, "fetus_organ").Message("fetus_organ")
 
-		//表单处理
-		valid.Min(CowId, 1, "cow_id").Message("cow_id必须大于0")
-		valid.Min(YakId, 1, "yak_id").Message("yal_id必须大于0")
-
-		valid.Required(FetusOrgan, "fetus_oragan").Message("fetus_organ不能为空")
-
-		valid.Range(IsComplete, 1, 2, "is_complete").Message("is_complete只能是1,2")
-		valid.Range(IsAbortion, 1, 2, "is_abortion").Message("is_abortion只能是1,2")
-
-		if !valid.HasErrors() && YakIndex > 0 && MilkProduction > 0 && Cream > 0 && Protein > 0 {
-			if model.ExistCalveByID(CowId) {
+		if !valid.HasErrors() && calve.YakIndex > 0 &&
+			calve.MilkProduction > 0 && calve.Cream > 0 &&
+			calve.Protein > 0 {
+			if model.ExistCalveByID(calve.CowId) {
 				code = e.ERROR_EXIST
 			} else {
-				calve := model.CalveRecord{
-					CowId:          CowId,
-					FetusOrgan:     FetusOrgan,
-					IsComplete:     IsComplete,
-					IsAbortion:     IsAbortion,
-					YakId:          YakId,
-					YakIndex:       YakIndex,
-					MilkProduction: MilkProduction,
-					Cream:          Cream,
-					Protein:        Protein,
-					BirthTime:      BirthTime,
-					FlowingTime:    FlowingTime,
-					FetusTime:      FetusTime,
-					FetusBirthTime: FetusBirthTime,
-					PlacentaTime:   PlacentaTime,
-				}
 				model.AddCalve(calve)
 				code = e.SUCCESS
 			}
@@ -170,10 +115,57 @@ func AddCalve(c *gin.Context) {
 
 //修改产犊记录
 func UpdateCalve(c *gin.Context) {
-
+	calve := util.GetCalveForm(c)
+	calve.Id = com.StrTo(c.Param("id")).MustInt()
+	log.Println(com.StrTo(c.Param("id")).MustInt())
+	code := e.INVALID_PARAMS
+	valid := validation.Validation{}
+	if (calve.FetusBirthTime != "" && !util.CheckTime(calve.FetusBirthTime)) ||
+		(calve.FetusTime != "" && !util.CheckTime(calve.FetusTime)) ||
+		(calve.FlowingTime != "" && !util.CheckTime(calve.FlowingTime)) ||
+		(calve.PlacentaTime != "" && !util.CheckTime(calve.PlacentaTime)) {
+		code = e.ERROR_TIME_FORMAT
+	} else {
+		valid.Min(calve.Id, 1, "id").Message("id应该>0")
+		if calve.YakId != 0 {
+			valid.Min(calve.YakId, 1, "yak_id").Message("yakid应该大于0")
+		}
+		if calve.IsAbortion != 0 {
+			valid.Range(calve.IsAbortion, 1, 2, "is_abortion").Message("is_abortion应该是1,2")
+		}
+		if calve.IsComplete != 0 {
+			valid.Range(calve.IsComplete, 1, 2, "is_complete").Message("is_complete")
+		}
+		if !valid.HasErrors() {
+			if !model.ExistCalveByID(calve.Id) {
+				code = e.ERROR_NOT_EXIST
+			} else {
+				model.UpdateCalve(calve.Id, calve)
+				code = e.SUCCESS
+				log.Println("code:", code)
+			}
+		} else {
+			for _, err := range valid.Errors {
+				log.Println("err.key:", err.Key, " err.msg:", err.Message)
+			}
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+	})
 }
 
 //删除产犊记录
 func DeleteCalve(c *gin.Context) {
-
+	Id := com.StrTo(c.Param("id")).MustInt()
+	code := e.INVALID_PARAMS
+	if model.ExistCalveByID(Id) {
+		model.DeleteCalve(Id)
+		code = e.SUCCESS
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+	})
 }
