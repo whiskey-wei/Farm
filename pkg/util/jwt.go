@@ -1,10 +1,11 @@
 package util
 
 import (
-	"farm/pkg/setting"
 	"time"
 
-	"github.com/dgrijalva/jwt-go"
+	jwt "github.com/dgrijalva/jwt-go"
+
+	"farm/pkg/setting"
 )
 
 var jwtSecret = []byte(setting.JwtSecret)
@@ -24,10 +25,11 @@ func GenerateToken(username, password string) (string, error) {
 		password,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "gin-farm",
+			Issuer:    "gin-blog",
 		},
 	}
-	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodES256, claims)
+
+	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(jwtSecret)
 
 	return token, err
@@ -37,10 +39,12 @@ func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
 		return jwtSecret, nil
 	})
+
 	if tokenClaims != nil {
 		if claims, ok := tokenClaims.Claims.(*Claims); ok && tokenClaims.Valid {
 			return claims, nil
 		}
 	}
+
 	return nil, err
 }

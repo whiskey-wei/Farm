@@ -78,3 +78,8 @@ func DeleteCalve(id int) bool {
 	db.Where("id = ?", id).Delete(&CalveRecord{})
 	return true
 }
+
+func GetFinalRecordBy(CowId int) (calve CalveRecord, flag bool) {
+	flag = db.Select("fetus_birth_time").Where("cow_id = ?", CowId).Last(&calve).RecordNotFound()
+	return
+}

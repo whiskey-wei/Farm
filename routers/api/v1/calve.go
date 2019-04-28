@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// @Summary 获取产犊记录
+// @Summary 获取产犊记录code
 // @Description 通过cow_id获取
 // @Accept  json
 // @Produce  json
@@ -22,6 +22,8 @@ import (
 // @Success 10002 {string} string "该数据不存在"
 // @Router /api/v1/calves/{cow_id} [get]
 func GetCalve(c *gin.Context) {
+	log.Println("get calve")
+
 	CowId := com.StrTo(c.Param("cow_id")).MustInt()
 
 	valid := validation.Validation{}
@@ -52,7 +54,7 @@ func GetCalve(c *gin.Context) {
 //获取多个母牛的产犊记录
 //
 // @Summary 获取一页产犊记录
-// @Description 每页20个记录，在路径中添加?page=x表示获取第x页的数据
+// @Description 每页20个记录，在路径中添加?page=x表示获取第x页的数据，若page=0则返回全部数据
 // @Accept  json
 // @Produce  json
 // @Param   page     query    int     false        "页号"
