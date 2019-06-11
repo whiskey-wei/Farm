@@ -9,9 +9,15 @@ type User struct {
 	EMail           string `json:"e_mail"`
 }
 
-func CheckUser(username, password string) bool {
+func CheckUser(username, password string) int {
 	var user User
-	db.Select("id").Where(&User{Username: username, Password: password}).First(&user)
+	db.Select("role").Where(&User{Username: username, Password: password}).First(&user)
+	return user.Role
+}
+
+func ExistUserByUsername(username string) bool {
+	var user User
+	db.Select("id").Where(&User{Username: username}).First(&user)
 	if user.ID > 0 {
 		return true
 	}
@@ -24,9 +30,28 @@ func AddUser(user User) bool {
 }
 
 func UpdateUser(user User) bool {
-	return db.Model(&User{}).Update(&user).RecordNotFound()
+	return !db.Model(&User{}).Update(&user).RecordNotFound()
 }
 
 func DeleteUser(id int) bool {
-	return db.Where("id = ?", id).Delete(&User{}).RecordNotFound()
+	return !db.Where("id = ?", id).Delete(&User{}).RecordNotFound()
+}
+
+func GetUserByUsername(username string) (user User, flag bool) {
+	flag = !db.Where("username = ?", username).First(&user).RecordNotFound()
+	return
+}
+
+func GetUserTotal(maps interface{}) (count int) {
+	db.Model(&User{}).Where(maps).Count(&count)
+	return
+}
+
+func GetUsers(pageNum int, pageSize int, maps interface{}) (users []User, flag bool) {
+	if pageNum > 0 && pageSize > 0 {
+		flag = !db.Where(maps).Find(&users).Offset(pageNum).Limit(pageSize).RecordNotFound()
+	} else {
+		flag = !db.Where(maps).Find(&users).RecordNotFound()
+	}
+	return
 }

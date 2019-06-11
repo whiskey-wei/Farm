@@ -71,8 +71,7 @@ func AddBreedingRecord(breedingrecord BreedingRecord) bool {
 }
 
 func UpdateBreedingRecord(id int, breedingrecord BreedingRecord) bool {
-	db.Model(&BreedingRecord{}).Where("id = ?", id).Update(&breedingrecord)
-	return true
+	return !db.Model(&BreedingRecord{}).Where("id = ?", id).Update(&breedingrecord).RecordNotFound()
 }
 
 func DeleteBreedigRecord(id int) bool {

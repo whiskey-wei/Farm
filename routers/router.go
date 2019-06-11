@@ -25,8 +25,9 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(setting.RunMode)
 
 	//获取Token
-	r.GET("/user", v1.GetUser)
-
+	r.GET("/user", v1.GetUserToken)
+	//注册，添加用户
+	r.POST("/user", v1.AddUser)
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())
 	{
@@ -36,15 +37,18 @@ func InitRouter() *gin.Engine {
 		apiv1.POST("/calves", v1.AddCalve)
 		apiv1.PUT("/calves/:id", v1.UpdateCalve)
 		apiv1.DELETE("/calves/:id", v1.DeleteCalve)
+
+		apiv1.PUT("/user", v1.UpdateUser)
+		apiv1.GET("/user", v1.GetUserSelf)
 	}
-	/*apiv1_breed := r.Group("/api/v1/breeds")
+
+	apiAdmin := r.Group("/admin")
+	apiAdmin.Use(jwt.JwtAdmin())
 	{
-		apiv1_breed.GET("", v1.GetBreeds)
-		apiv1_breed.GET("/:cow_id", v1.GetBreed)
-		apiv1_breed.POST("", v1.AddBreed)
-		apiv1_breed.PUT("/:id", v1.UpdateBreed)
-		apiv1_breed.DELETE("/:id", v1.DeleteBreed)
-	}*/
+		apiAdmin.GET("/user", v1.GetUser)
+		apiAdmin.GET("/users", v1.GetUsers)
+	}
+
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	return r
 }

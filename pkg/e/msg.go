@@ -11,6 +11,7 @@ var MsgFlags = map[int]string{
 	ERROR_USER_CHECK_TOKEN_TIMEOUT: "Token已超时",
 	ERROR_USER_TOKEN:               "Token生成失败",
 	ERROR_USER:                     "Token错误",
+	ERROR_PERMISSION_DENY:          "用户权限不够",
 }
 
 func GetMsg(code int) string {

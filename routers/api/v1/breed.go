@@ -82,5 +82,82 @@ func GetBreeds(c *gin.Context) {
 }
 
 func AddBreed(c *gin.Context) {
+	breed := util.GetBreedForm(c)
+	code := e.INVALID_PARAMS
+	if !util.CheckTime(breed.StartTime) || !util.CheckTime(breed.EndTime) ||
+		(breed.FirstTime != "" && util.CheckTime(breed.FirstTime)) ||
+		(breed.SecondTime != "" && util.CheckTime(breed.SecondTime)) ||
+		(breed.ThirdTime != "" && util.CheckTime(breed.ThirdTime)) ||
+		(breed.FinalTime != "" && util.CheckTime(breed.FinalTime)) {
+		code = e.INVALID_PARAMS
+	} else {
+		if breed.CowId > 0 {
+			if breed.FirstTime != "" && breed.FirstNumber == 0 ||
+				breed.SecondTime != "" && breed.SecondNumber == 0 ||
+				breed.ThirdTime != "" && breed.ThirdNumber == 0 ||
+				breed.FinalTime != "" && breed.FinalNumber == 0 {
+				code = e.INVALID_PARAMS
+			} else {
+				tmptime, ok := model.GetBirthTimeByCowId(breed.CowId)
+				if ok {
+					breed.LastBirthTime = tmptime
+					if model.AddBreedingRecord(breed) {
+						code = e.SUCCESS
+					}
+				}
+			}
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+	})
+}
 
+func DeleteBreed(c *gin.Context) {
+	id := com.StrTo(c.Param("id")).MustInt()
+	code := e.INVALID_PARAMS
+	if model.ExistBreedingRecordById(id) {
+		if model.DeleteBreedigRecord(id) {
+			code = e.SUCCESS
+		} else {
+			code = e.ERROR_NOT_EXIST
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+	})
+}
+
+func UpdateBreed(c *gin.Context) {
+	breed := util.GetBreedForm(c)
+	code := e.INVALID_PARAMS
+	if !util.CheckTime(breed.StartTime) || !util.CheckTime(breed.EndTime) ||
+		(breed.FirstTime != "" && util.CheckTime(breed.FirstTime)) ||
+		(breed.SecondTime != "" && util.CheckTime(breed.SecondTime)) ||
+		(breed.ThirdTime != "" && util.CheckTime(breed.ThirdTime)) ||
+		(breed.FinalTime != "" && util.CheckTime(breed.FinalTime)) {
+		code = e.INVALID_PARAMS
+	} else {
+		if breed.CowId > 0 {
+			if breed.FirstTime != "" && breed.FirstNumber == 0 ||
+				breed.SecondTime != "" && breed.SecondNumber == 0 ||
+				breed.ThirdTime != "" && breed.ThirdNumber == 0 ||
+				breed.FinalTime != "" && breed.FinalNumber == 0 {
+				code = e.INVALID_PARAMS
+			} else {
+				ok := model.UpdateBreedingRecord(breed.Id, breed)
+				if ok {
+					code = e.SUCCESS
+				} else {
+					code = e.ERROR_NOT_EXIST
+				}
+			}
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": code,
+		"msg":  e.GetMsg(code),
+	})
 }

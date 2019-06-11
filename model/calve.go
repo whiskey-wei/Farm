@@ -79,7 +79,9 @@ func DeleteCalve(id int) bool {
 	return true
 }
 
-func GetFinalRecordBy(CowId int) (calve CalveRecord, flag bool) {
-	flag = db.Select("fetus_birth_time").Where("cow_id = ?", CowId).Last(&calve).RecordNotFound()
+func GetBirthTimeByCowId(CowId int) (birthtime string, flag bool) {
+	var calve CalveRecord
+	flag = !db.Select("birth_time").Where("cow_id = ?", CowId).Last(&calve).RecordNotFound()
+	birthtime = calve.BirthTime
 	return
 }
