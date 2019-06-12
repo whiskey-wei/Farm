@@ -3,15 +3,17 @@ package model
 import "fmt"
 
 type User struct {
-	ID              int    `json:"id"`
-	Username        string `json:"username"`
-	Password        string `json:"password"`
-	Role            int    `json:"role"`
-	TelephoneNumber string `json:"telephone_number"`
-	EMail           string `json:"e_mail"`
+	ID              int    `json:"id"`						//id
+	Username        string `json:"username"`				//用户名
+	Password        string `json:"password"`				//密码
+	Farmname		string `json:"farmname"`				//农场名
+	Role            int    `json:"role"`					//职级，0为管理员，1为员工
+	PersonalName	string `json:"personal_name"`			//姓名
+	TelephoneNumber string `json:"telephone_number"`		//电话
+	EMail           string `json:"e_mail"`					//邮箱
 }
 
-func CheckUser(username, password string) int {
+func CheckUser(username string, password string) int {
 	var user User
 	db.Select("role").Where(&User{Username: username, Password: password}).First(&user)
 	return user.Role

@@ -17,19 +17,17 @@ import (
 
 //登录获取token,username,password在路径中
 func GetUserToken(c *gin.Context) {
-	username := c.Query("username")
-	password := c.Query("password")
+	username := c.PostForm("username")
+	password := c.PostForm("password")
 	//role := com.StrTo(c.Query("role")).MustInt()
 	//log.Println(username, " ", password)
 	code := e.INVALID_PARAMS
 	data := make(map[string]interface{})
-
 	role := model.CheckUser(username, password)
 	if role != 0 {
 		token, err := util.GenerateToken(username, password, role)
 		if err != nil {
 			code = e.ERROR_USER_TOKEN
-			log.Println(token)
 		} else {
 			data["token"] = token
 			code = e.SUCCESS
@@ -45,44 +43,32 @@ func GetUserToken(c *gin.Context) {
 	})
 }
 
-//注册，添加用户，表单提交，所有的数据都是必填项，只能注册普通用户role为1
+//注册，添加用户，表单提交，所有的数据都是必填项，锁定普通员工role为1
 func AddUser(c *gin.Context) {
 	username := c.PostForm("username")
 	password := c.PostForm("password")
+	farmname := c.PostForm("farmname")
 	role := 1
-	telephonenumber := c.PostForm("telephone_number")
-	email := c.PostForm("e_mail")
+	personalname := c.PostForm("personalname")
+	telephonenumber := c.PostForm("telephonenumber")
+	email := c.PostForm("email")
 	fmt.Println(username + " " + password)
 	code := e.INVALID_PARAMS
 
 	if model.ExistUserByUsername(username) {
 		code = e.ERROR_EXIST
 	} else {
-<<<<<<< HEAD
-		if model.ExistUserByUsername(username) {
-			code = e.ERROR_EXIST
-		} else {
-			model.AddUser(model.User{
-				Username:        username,
-				Password:        password,
-				Role:            role,
-				TelephoneNumber: telephonenumber,
-				EMail:           email,
-			})
-			code = e.SUCCESS
-		}
-=======
 		model.AddUser(model.User{
 			Username:        username,
 			Password:        password,
+			Farmname:		 farmname,
 			Role:            role,
+			PersonalName:	 personalname,
 			TelephoneNumber: telephonenumber,
 			EMail:           email,
 		})
 		code = e.SUCCESS
->>>>>>> cc99480ae0d8baafd69dc2de88ed8afa6962b56e
 	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),

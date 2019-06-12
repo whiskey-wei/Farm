@@ -25,9 +25,9 @@ func InitRouter() *gin.Engine {
 	gin.SetMode(setting.RunMode)
 
 	//获取Token
-	r.GET("/user", v1.GetUserToken)
+	r.POST("/login", v1.GetUserToken)
 	//注册，添加用户
-	r.POST("/user", v1.AddUser)
+	r.POST("/register", v1.AddUser)
 	apiv1 := r.Group("/api/v1")
 	apiv1.Use(jwt.JWT())
 	{
