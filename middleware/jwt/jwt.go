@@ -1,10 +1,11 @@
 package jwt
 
 import (
-	"farm/pkg/e"
-	"farm/pkg/util"
 	"net/http"
 	"time"
+
+	"github.com/whiskey-wei/Farm/pkg/e"
+	"github.com/whiskey-wei/Farm/pkg/util"
 
 	"github.com/gin-gonic/gin"
 )

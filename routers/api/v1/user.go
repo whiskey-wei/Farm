@@ -1,12 +1,13 @@
 package v1
 
 import (
-	"farm/model"
-	"farm/pkg/e"
-	"farm/pkg/setting"
-	"farm/pkg/util"
 	"log"
 	"net/http"
+
+	"github.com/whiskey-wei/Farm/model"
+	"github.com/whiskey-wei/Farm/pkg/e"
+	"github.com/whiskey-wei/Farm/pkg/setting"
+	"github.com/whiskey-wei/Farm/pkg/util"
 
 	"github.com/Unknwon/com"
 

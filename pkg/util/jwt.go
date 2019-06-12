@@ -5,7 +5,7 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
-	"farm/pkg/setting"
+	"github.com/whiskey-wei/Farm/pkg/setting"
 )
 
 var jwtSecret = []byte(setting.JwtSecret)
@@ -27,7 +27,7 @@ func GenerateToken(username, password string, role int) (string, error) {
 		role,
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
-			Issuer:    "gin-farm",
+			Issuer:    "gin-github.com/whiskey",
 		},
 	}
 

@@ -1,7 +1,7 @@
 package util
 
 import (
-	"farm/pkg/setting"
+	"github.com/whiskey-wei/Farm/pkg/setting"
 
 	"github.com/Unknwon/com"
 	"github.com/gin-gonic/gin"

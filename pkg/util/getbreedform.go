@@ -1,7 +1,7 @@
 package util
 
 import (
-	"farm/model"
+	"github.com/whiskey-wei/Farm/model"
 
 	"github.com/Unknwon/com"
 

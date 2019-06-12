@@ -1,13 +1,13 @@
 package routers
 
 import (
-	"farm/middleware/jwt"
-	"farm/pkg/setting"
-	v1 "farm/routers/api/v1"
+	"github.com/whiskey-wei/Farm/middleware/jwt"
+	"github.com/whiskey-wei/Farm/pkg/setting"
+	v1 "github.com/whiskey-wei/Farm/routers/api/v1"
 
 	"github.com/gin-gonic/gin"
 
-	_ "farm/docs"
+	_ "github.com/whiskey-wei/Farm/docs"
 
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"

@@ -1,10 +1,11 @@
 package main
 
 import (
-	"farm/pkg/setting"
-	"farm/routers"
 	"fmt"
 	"net/http"
+
+	"github.com/whiskey-wei/Farm/pkg/setting"
+	"github.com/whiskey-wei/Farm/routers"
 )
 
 func main() {

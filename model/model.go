@@ -1,9 +1,10 @@
 package model
 
 import (
-	"farm/pkg/setting"
 	"fmt"
 	"log"
+
+	"github.com/whiskey-wei/Farm/pkg/setting"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
