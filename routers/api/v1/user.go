@@ -60,7 +60,7 @@ func AddUser(c *gin.Context) {
 		code = e.INVALID_PARAMS
 		log.Println("用户名密码格式出错")
 	} else {
-		if !model.ExistUserByUsername(username) {
+		if model.ExistUserByUsername(username) {
 			code = e.ERROR_EXIST
 		} else {
 			model.AddUser(model.User{
