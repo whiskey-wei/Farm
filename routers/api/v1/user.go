@@ -58,6 +58,7 @@ func AddUser(c *gin.Context) {
 	if model.ExistUserByUsername(username) {
 		code = e.ERROR_EXIST
 	} else {
+<<<<<<< HEAD
 		model.AddUser(model.User{
 			Username:        username,
 			Password:        password,
@@ -66,6 +67,20 @@ func AddUser(c *gin.Context) {
 			EMail:           email,
 		})
 		code = e.SUCCESS
+=======
+		if model.ExistUserByUsername(username) {
+			code = e.ERROR_EXIST
+		} else {
+			model.AddUser(model.User{
+				Username:        username,
+				Password:        password,
+				Role:            role,
+				TelephoneNumber: telephonenumber,
+				EMail:           email,
+			})
+			code = e.SUCCESS
+		}
+>>>>>>> f2a17e04c481687738656f697007a6de55886bda
 	}
 
 	c.JSON(http.StatusOK, gin.H{
