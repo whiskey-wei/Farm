@@ -1,5 +1,7 @@
 package model
 
+import "fmt"
+
 type User struct {
 	ID              int    `json:"id"`
 	Username        string `json:"username"`
@@ -18,6 +20,7 @@ func CheckUser(username, password string) int {
 func ExistUserByUsername(username string) bool {
 	var user User
 	db.Select("id").Where(&User{Username: username}).First(&user)
+	fmt.Println(user.ID)
 	if user.ID > 0 {
 		return true
 	}
