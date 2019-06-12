@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -22,23 +23,21 @@ func GetUserToken(c *gin.Context) {
 	//log.Println(username, " ", password)
 	code := e.INVALID_PARAMS
 	data := make(map[string]interface{})
-	if username == "" || util.CheckUser(username) || password == "" || util.CheckUser(password) {
-		code = e.ERROR_USER
-	} else {
-		role := model.CheckUser(username, password)
-		if role != 0 {
-			token, err := util.GenerateToken(username, password, role)
-			if err != nil {
-				code = e.ERROR_USER_TOKEN
-				log.Println(token)
-			} else {
-				data["token"] = token
-				code = e.SUCCESS
-			}
+
+	role := model.CheckUser(username, password)
+	if role != 0 {
+		token, err := util.GenerateToken(username, password, role)
+		if err != nil {
+			code = e.ERROR_USER_TOKEN
+			log.Println(token)
 		} else {
-			code = e.ERROR_USER
+			data["token"] = token
+			code = e.SUCCESS
 		}
+	} else {
+		code = e.ERROR_USER
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),
@@ -53,13 +52,13 @@ func AddUser(c *gin.Context) {
 	role := 1
 	telephonenumber := c.PostForm("telephone_number")
 	email := c.PostForm("e_mail")
-
+	fmt.Println(username + " " + password)
 	code := e.INVALID_PARAMS
 
-	if !util.CheckUser(username) || !util.CheckUser(password) || !util.CheckTelepthoneNumber(telephonenumber) || !util.CheckEmail(email) || (role != 1 && role != 2) {
-		code = e.INVALID_PARAMS
-		log.Println("用户名密码格式出错")
+	if model.ExistUserByUsername(username) {
+		code = e.ERROR_EXIST
 	} else {
+<<<<<<< HEAD
 		if model.ExistUserByUsername(username) {
 			code = e.ERROR_EXIST
 		} else {
@@ -72,7 +71,18 @@ func AddUser(c *gin.Context) {
 			})
 			code = e.SUCCESS
 		}
+=======
+		model.AddUser(model.User{
+			Username:        username,
+			Password:        password,
+			Role:            role,
+			TelephoneNumber: telephonenumber,
+			EMail:           email,
+		})
+		code = e.SUCCESS
+>>>>>>> cc99480ae0d8baafd69dc2de88ed8afa6962b56e
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),

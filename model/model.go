@@ -45,6 +45,8 @@ func init() {
 	db.SingularTable(true)
 	db.DB().SetMaxIdleConns(10)
 	db.DB().SetMaxOpenConns(100)
+
+	db.LogMode(true)
 }
 
 func CloseDB() {
