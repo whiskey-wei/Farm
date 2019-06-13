@@ -57,7 +57,7 @@ func GetCalves(c *gin.Context) {
 
 	if !valid.HasErrors() {
 		var err error
-		data["lists"], err = model.GetCalves(util.GetPage(c), setting.PageSize, maps)
+		data["list"], err = model.GetCalves(util.GetPage(c), setting.PageSize, maps)
 		if err != nil {
 			code = e.ERROR
 		}

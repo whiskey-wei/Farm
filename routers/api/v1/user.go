@@ -85,17 +85,15 @@ func GetUserSelf(c *gin.Context) {
 	username := claim.Username
 
 	code := e.INVALID_PARAMS
-	data := make(map[string]interface{})
 
 	user, ok := model.GetUserByUsername(username)
 	if ok {
 		code = e.SUCCESS
-		data["user"] = user
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),
-		"data": data,
+		"data": user,
 	})
 }
 
