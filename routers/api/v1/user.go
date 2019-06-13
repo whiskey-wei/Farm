@@ -101,35 +101,26 @@ func GetUserSelf(c *gin.Context) {
 
 //更新数据
 func UpdateUser(c *gin.Context) {
-	token := c.Query("token")
-	claim, _ := util.ParseToken(token)
-	username := claim.Username
+	//token := c.Query("token")
+	//claim, _ := util.ParseToken(token)
+	//username := claim.Username
 	password := c.PostForm("password")
 	role := com.StrTo(c.PostForm("role")).MustInt()
 	telephonenumber := c.PostForm("telephone_number")
 	email := c.PostForm("e_mail")
-
 	code := e.INVALID_PARAMS
 
-	if (username != "" && !util.CheckUser(username)) ||
-		password != "" && !util.CheckUser(password) ||
-		telephonenumber != "" && !util.CheckTelepthoneNumber(telephonenumber) ||
-		email != "" && !util.CheckEmail(email) ||
-		role != 0 && role != 1 && role != 2 {
-		code = e.INVALID_PARAMS
-		log.Println("用户名密码格式出错")
+	if model.UpdateUser(model.User{
+		Password:        password,
+		Role:            role,
+		TelephoneNumber: telephonenumber,
+		EMail:           email,
+	}) {
+		code = e.SUCCESS
 	} else {
-		if model.UpdateUser(model.User{
-			Password:        password,
-			Role:            role,
-			TelephoneNumber: telephonenumber,
-			EMail:           email,
-		}) {
-			code = e.SUCCESS
-		} else {
-			code = e.ERROR_NOT_EXIST
-		}
+		code = e.ERROR_NOT_EXIST
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
 		"msg":  e.GetMsg(code),

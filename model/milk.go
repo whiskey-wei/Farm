@@ -13,4 +13,6 @@ type MilkProductionRecord struct { //产奶记录
 	DuskInjection  float64 `json:"dusk_injection"`
 }
 
-func AddMilkproductionRecord()
+func AddMilkproductionRecord(milk_production MilkProductionRecord) error {
+	return db.Create(&milk_production).Error
+}
