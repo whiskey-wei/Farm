@@ -52,7 +52,7 @@ func GetUserTotal(maps interface{}) (count int) {
 
 func GetUsers(pageNum int, pageSize int, maps interface{}) (users []User, flag bool) {
 	if pageNum > 0 && pageSize > 0 {
-		flag = !db.Where(maps).Find(&users).Offset(pageNum).Limit(pageSize).RecordNotFound()
+		flag = !db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&users).RecordNotFound()
 	} else {
 		flag = !db.Where(maps).Find(&users).RecordNotFound()
 	}

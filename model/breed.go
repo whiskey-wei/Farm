@@ -50,7 +50,7 @@ func GetBreedingRecords(pageNum, pageSize int, maps interface{}) (breedingrecord
 	var err error
 	flag = true
 	if pageNum > 0 && pageSize > 0 {
-		err = db.Where(maps).Find(&breedingrecords).Offset(pageNum).Limit(pageSize).Error
+		err = db.Where(maps).Limit(pageSize).Offset(pageNum).Error
 	} else {
 		err = db.Where(maps).Find(&breedingrecords).Error
 	}
@@ -66,15 +66,24 @@ func GetBreedingRecord(CowId int) (breedrecords []BreedingRecord) {
 	return
 }
 
-func AddBreedingRecord(breedingrecord BreedingRecord) bool {
-	db.Create(&breedingrecord)
+func AddBreedingRecord(breedingRecord BreedingRecord) bool {
+	db.Create(&breedingRecord)
 	return true
 }
 
-func UpdateBreedingRecord(id int, breedingrecord BreedingRecord) bool {
-	return !db.Model(&BreedingRecord{}).Where("id = ?", id).Update(&breedingrecord).RecordNotFound()
+func UpdateBreedingRecord(id int, breedingRecord BreedingRecord) bool {
+	return !db.Model(&BreedingRecord{}).Where("id = ?", id).Update(&breedingRecord).RecordNotFound()
 }
 
 func DeleteBreedigRecord(id int) error {
 	return db.Where("id = ?", id).Delete(&BreedingRecord{}).Error
+}
+
+func GetFinalBreedTime(cowId int) (string, error) {
+	var breed BreedingRecord
+	err := db.Select("final_time").Where("cow_id = ?", cowId).Last(&breed).Error
+	if err != nil {
+		return "", err
+	}
+	return breed.FinalTime, nil
 }

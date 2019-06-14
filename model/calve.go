@@ -50,7 +50,7 @@ func GetCalveTotal(maps interface{}) (count int) {
 
 func GetCalves(pageNum int, pageSize int, maps interface{}) (calves []CalveRecord, err error) {
 	if pageSize > 0 && pageNum > 0 {
-		err = db.Where(maps).Find(&calves).Offset(pageNum).Limit(pageSize).Error
+		err = db.Where(maps).Offset(pageNum).Limit(pageSize).Find(&calves).Error
 	} else {
 		err = db.Where(maps).Find(&calves).Error
 	}

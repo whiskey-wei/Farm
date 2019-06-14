@@ -44,6 +44,12 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/breeds/:id", v1.UpdateBreed)
 		apiv1.DELETE("/breeds/:id", v1.DeleteBreed)
 
+		apiv1.GET("/pregnancy", v1.GetPregnancys)
+		apiv1.GET("/pregnancy/:cow_id", v1.GetPregnancy)
+		apiv1.POST("/pregnancy", v1.AddPregnancy)
+		apiv1.PUT("/pregnancy/:id", v1.UpdatePregnancy)
+		apiv1.DELETE("/pregnancy/:id", v1.DeletePregnancy)
+
 		apiv1.PUT("/user", v1.UpdateUser)
 		apiv1.GET("/user", v1.GetUserSelf)
 	}
