@@ -4,22 +4,23 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type BreedingRecord struct { //配种记录
-	Id            int    `gorm:"primary_key" json:"id"`
-	CowId         int    `json:"cow_id"`
-	LastBirthTime string `json:"last_birth_time"` //上胎分娩时间
-	StartTime     string `json:"start_time"`      //发情开始时间
-	EndTime       string `json:"end_time"`        //发情结束时间
-	FirstTime     string `json:"first_time"`      //第一次配种时间
-	FirstNumber   int    `json:"first_number"`    //第一次配种冻精编号
-	SecondTime    string `json:"second_time"`
-	SecondNumber  int    `json:"second_number"`
-	ThirdTime     string `json:"third_time"`
-	ThirdNumber   int    `json:"third_number"`
-	FourthTime    string `json:"fourth_time"`
-	FourthNumber  int    `json:"fourth_number"`
-	FinalTime     string `json:"final_time"`
-	FinalNumber   int    `json:"final_number"`
+type BreedingRecord struct {
+	//配种记录
+	Id            int    `gorm:"primary_key" json:"id" form:"id"`
+	CowId         int    `json:"cow_id" form:"cow_id"`
+	LastBirthTime string `json:"last_birth_time" form:"last_birth_time"` //上胎分娩时间
+	StartTime     string `json:"start_time" form:"start_time"`           //发情开始时间
+	EndTime       string `json:"end_time" form:"end_time"`               //发情结束时间
+	FirstTime     string `json:"first_time" form:"first_time"`           //第一次配种时间
+	FirstNumber   int    `json:"first_number" form:"first_number"`       //第一次配种冻精编号
+	SecondTime    string `json:"second_time" form:"second_time"`
+	SecondNumber  int    `json:"second_number" form:"second_number"`
+	ThirdTime     string `json:"third_time" form:"third_time"`
+	ThirdNumber   int    `json:"third_number" form:"third_number"`
+	FourthTime    string `json:"fourth_time" form:"fourth_time"`
+	FourthNumber  int    `json:"fourth_number" form:"fourth_number"`
+	FinalTime     string `json:"final_time" form:"final_time"`
+	FinalNumber   int    `json:"final_number" form:"final_number"`
 }
 
 func ExistBreedingRecordByCowID(CowId int) bool {
@@ -74,7 +75,6 @@ func UpdateBreedingRecord(id int, breedingrecord BreedingRecord) bool {
 	return !db.Model(&BreedingRecord{}).Where("id = ?", id).Update(&breedingrecord).RecordNotFound()
 }
 
-func DeleteBreedigRecord(id int) bool {
-	db.Where("id = ?", id).Delete(&BreedingRecord{})
-	return true
+func DeleteBreedigRecord(id int) error {
+	return db.Where("id = ?", id).Delete(&BreedingRecord{}).Error
 }

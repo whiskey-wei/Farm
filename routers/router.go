@@ -29,7 +29,7 @@ func InitRouter() *gin.Engine {
 	//注册，添加用户
 	r.POST("/user", v1.AddUser)
 	apiv1 := r.Group("/api/v1")
-	apiv1.Use(jwt.JWT())
+	//apiv1.Use(jwt.JWT())
 	{
 		//calverecord
 		apiv1.GET("/calves", v1.GetCalves)
@@ -37,6 +37,12 @@ func InitRouter() *gin.Engine {
 		apiv1.POST("/calves", v1.AddCalve)
 		apiv1.PUT("/calves/:id", v1.UpdateCalve)
 		apiv1.DELETE("/calves/:id", v1.DeleteCalve)
+
+		apiv1.GET("/breeds", v1.GetBreeds)
+		apiv1.GET("/breeds/:cow_id", v1.GetBreed)
+		apiv1.POST("/breeds", v1.AddBreed)
+		apiv1.PUT("/breeds/:id", v1.UpdateBreed)
+		apiv1.DELETE("/breeds/:id", v1.DeleteBreed)
 
 		apiv1.PUT("/user", v1.UpdateUser)
 		apiv1.GET("/user", v1.GetUserSelf)

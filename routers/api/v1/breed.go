@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/whiskey-wei/Farm/model"
@@ -54,7 +55,7 @@ func GetBreeds(c *gin.Context) {
 	data := make(map[string]interface{})
 	maps := make(map[string]interface{})
 
-	code := e.INVALID_PARAMS
+	code := e.SUCCESS
 	var ok bool
 
 	data["list"], ok = model.GetBreedingRecords(util.GetPage(c), setting.PageSize, maps)
@@ -72,6 +73,14 @@ func GetBreeds(c *gin.Context) {
 
 func AddBreed(c *gin.Context) {
 	breed := util.GetBreedForm(c)
+	var ok bool
+	breed.LastBirthTime, ok = model.GetLastBirthTime(breed.CowId)
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  "error",
+		})
+	}
 	code := e.INVALID_PARAMS
 
 	if model.AddBreedingRecord(breed) {
@@ -86,22 +95,24 @@ func AddBreed(c *gin.Context) {
 
 func DeleteBreed(c *gin.Context) {
 	id := com.StrTo(c.Param("id")).MustInt()
-	code := e.INVALID_PARAMS
-	if model.ExistBreedingRecordById(id) {
-		if model.DeleteBreedigRecord(id) {
-			code = e.SUCCESS
-		} else {
-			code = e.ERROR_NOT_EXIST
-		}
+	fmt.Println("id:", id)
+	err := model.DeleteBreedigRecord(id)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": -1,
+			"msg":  err.Error(),
+		})
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"code": e.SUCCESS,
+			"msg":  e.GetMsg(e.SUCCESS),
+		})
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  e.GetMsg(code),
-	})
 }
 
 func UpdateBreed(c *gin.Context) {
 	breed := util.GetBreedForm(c)
+	breed.Id = com.StrTo(c.Param("id")).MustInt()
 	code := e.INVALID_PARAMS
 
 	ok := model.UpdateBreedingRecord(breed.Id, breed)

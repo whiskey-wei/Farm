@@ -4,7 +4,8 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type CalveRecord struct { //产犊记录
+type CalveRecord struct {
+	//产犊记录
 	Id             int     `gorm:"primary_key" json:"id"`
 	CowId          int     `json:"cow_id"`           //母牛号
 	FetusOrgan     string  `json:"fetus_organ"`      //露出阴门的胎儿器官
@@ -79,7 +80,7 @@ func DeleteCalve(id int) bool {
 	return true
 }
 
-func GetBirthTimeByCowId(CowId int) (birthtime string, flag bool) {
+func GetLastBirthTime(CowId int) (birthtime string, flag bool) {
 	var calve CalveRecord
 	flag = !db.Select("birth_time").Where("cow_id = ?", CowId).Last(&calve).RecordNotFound()
 	birthtime = calve.BirthTime
