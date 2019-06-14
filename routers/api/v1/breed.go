@@ -25,12 +25,9 @@ func GetBreed(c *gin.Context) {
 	CowId := com.StrTo(c.Param("cow_id")).MustInt()
 	var data interface{}
 	var code int
-	if model.ExistBreedingRecordByCowID(CowId) {
-		data = model.GetBreedingRecord(CowId)
-		code = e.SUCCESS
-	} else {
-		code = e.ERROR_NOT_EXIST
-	}
+
+	data = model.GetBreedingRecord(CowId)
+	code = e.SUCCESS
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": code,
