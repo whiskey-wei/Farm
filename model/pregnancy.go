@@ -24,7 +24,7 @@ func AddPregnancyRecord(pregnancy PregnancyRecord) error {
 }
 
 func UpdatePregnancyRecord(id int, prenancy PregnancyRecord) error {
-	return db.Model(PregnancyRecord{}).Where("id = ?", id).Update(&prenancy).Error
+	return db.Model(&PregnancyRecord{}).Where("id = ?", id).Update(&prenancy).Error
 }
 
 func GetPregnancyRecords(pageNum, pageSize int) (pregnancys []PregnancyRecord, err error) {

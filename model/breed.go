@@ -50,7 +50,7 @@ func GetBreedingRecords(pageNum, pageSize int, maps interface{}) (breedingrecord
 	var err error
 	flag = true
 	if pageNum > 0 && pageSize > 0 {
-		err = db.Where(maps).Limit(pageSize).Offset(pageNum).Error
+		err = db.Where(maps).Limit(pageSize).Offset(pageNum).Find(&breedingrecords).Error
 	} else {
 		err = db.Where(maps).Find(&breedingrecords).Error
 	}
