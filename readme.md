@@ -239,3 +239,53 @@
      },  
      "msg": "ok"  
  }  
+ 
+## 产奶记录相关接口  
+apiv1.GET("/milk", v1.GetMilkProductions)  
+apiv1.GET("/milk/:cow_id", v1.GetMilkProduction)  
+apiv1.POST("/milk", v1.AddMilkProduction)  
+apiv1.PUT("/milk/:id", v1.UpdateMilkProduction)  
+apiv1.DELETE("/milk/:id", v1.DeleteMilkProduction)  
+
+* Request  
+![milk](image/milk.png)  
+* Response  
+{  
+    "code": 200,  
+    "data": {  
+        "list": [  
+            {  
+                "id": 1,  
+                "cow_id": 7,  
+                "record_time": "2019-06-15 14:17:21",  
+                "morn_production": 1.2,  
+                "noon_production": 1.3,  
+                "dusk_production": 1.4,  
+                "sum_production": 3.9,  
+                "morn_injection": 1.5,  
+                "noon_injection": 1.6,  
+                "dusk_injection": 2  
+            }  
+        ],  
+        "total": 1  
+    },  
+    "msg": "ok"  
+}  
+{  
+    "code": 200,  
+    "data": [  
+        {  
+            "id": 1,  
+            "cow_id": 7,  
+            "record_time": "2019-06-15 14:17:21",  
+            "morn_production": 1.2,  
+            "noon_production": 1.3,  
+            "dusk_production": 1.4,  
+            "sum_production": 3.9,  
+            "morn_injection": 1.5,  
+            "noon_injection": 1.6,  
+            "dusk_injection": 2  
+        }  
+    ],  
+    "msg": "ok"  
+}  
