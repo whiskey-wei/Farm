@@ -250,7 +250,7 @@ apiv1.DELETE("/milk/:id", v1.DeleteMilkProduction)
 * Request  
 ![milk](image/milk.png)  
 * Response  
-{  
+{   
     "code": 200,  
     "data": {  
         "list": [  
@@ -285,6 +285,66 @@ apiv1.DELETE("/milk/:id", v1.DeleteMilkProduction)
             "morn_injection": 1.5,  
             "noon_injection": 1.6,  
             "dusk_injection": 2  
+        }  
+    ],  
+    "msg": "ok"  
+}  
+
+## 生长记录接口
+apiv1.GET("/yak", v1.GetYaks)  
+apiv1.GET("/yak/:yak_id", v1.GetYak)  
+apiv1.POST("/yak", v1.AddYak)  
+apiv1.PUT("/yak/:id", v1.UpdataYak)   
+apiv1.DELETE("/yak/:id", v1.DeleteYak)  
+* Request  
+![yak](image/yak.png)  
+
+* Response  
+{  
+    "code": 200,  
+    "data": {  
+        "list": [  
+            {  
+                "id": 1,  
+                "yak_id": 11,  
+                "variety": "bobo",  
+                "birth_time": "2019-04-21 14:46:43",  
+                "father_number": 5,  
+                "mother_number": 7,  
+                "weight": 77.7,  
+                "length": 88.8,  
+                "height": 99.9,  
+                "bust": 101.1,  
+                "front_rear_distance": 33.3,  
+                "left_right_distance": 44.4,  
+                "left_front_length": 55.5,  
+                "right_rear_length": 66.6,  
+                "record_time": "2019-06-15 18:06:58"  
+            }  
+        ],  
+        "total": 1  
+    },  
+    "msg": "ok"  
+}  
+{  
+    "code": 200,  
+    "data": [  
+        {  
+            "id": 1,  
+            "yak_id": 11,  
+            "variety": "bobo",  
+            "birth_time": "2019-04-21 14:46:43",  
+            "father_number": 5,  
+            "mother_number": 7,  
+            "weight": 77.7,  
+            "length": 88.8,  
+            "height": 99.9,  
+            "bust": 101.1,   
+            "front_rear_distance": 33.3,  
+            "left_right_distance": 44.4,  
+            "left_front_length": 55.5,  
+            "right_rear_length": 66.6,  
+            "record_time": "2019-06-15 18:06:58"  
         }  
     ],  
     "msg": "ok"  

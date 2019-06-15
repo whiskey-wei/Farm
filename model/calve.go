@@ -86,3 +86,15 @@ func GetLastBirthTime(CowId int) (birthtime string, flag bool) {
 	birthtime = calve.BirthTime
 	return
 }
+
+func GetBirthTimeAndCowIdByYakId(yakId int) (string, int, error) {
+	var calve CalveRecord
+	err := db.Select("birth_time, cow_id").Where("yak_id = ?", yakId).First(&calve).Error
+	return calve.BirthTime, calve.CowId, err
+}
+
+func GetCowIdByYakId(yakId int) (int, error) {
+	var calve CalveRecord
+	err := db.Select("cow_id").Where("yak_id = ?", yakId).First(&calve).Error
+	return calve.CowId, err
+}

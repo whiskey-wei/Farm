@@ -87,3 +87,9 @@ func GetFinalBreedTime(cowId int) (string, error) {
 	}
 	return breed.FinalTime, nil
 }
+
+func GetFinalBreedNumber(cowId int) (int, error) {
+	var breed BreedingRecord
+	err := db.Select("final_number").Where("cow_id = ?", cowId).Last(&breed).Error
+	return breed.FinalNumber, err
+}

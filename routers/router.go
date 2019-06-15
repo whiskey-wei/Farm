@@ -56,6 +56,12 @@ func InitRouter() *gin.Engine {
 		apiv1.PUT("/milk/:id", v1.UpdateMilkProduction)
 		apiv1.DELETE("/milk/:id", v1.DeleteMilkProduction)
 
+		apiv1.GET("/yak", v1.GetYaks)
+		apiv1.GET("/yak/:yak_id", v1.GetYak)
+		apiv1.POST("/yak", v1.AddYak)
+		apiv1.PUT("/yak/:id", v1.UpdataYak)
+		apiv1.DELETE("/yak/:id", v1.DeleteYak)
+
 		apiv1.PUT("/user", v1.UpdateUser)
 		apiv1.GET("/user", v1.GetUserSelf)
 	}
