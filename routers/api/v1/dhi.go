@@ -96,3 +96,7 @@ func AddDhi(c *gin.Context) {
 func UpdateDhi(c *gin.Context) {
 
 }
+
+func DeleteDhi(c *gin.Context) {
+
+}
