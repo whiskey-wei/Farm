@@ -54,8 +54,8 @@ func GetYakRecord(yakId int) ([]YakRecord, error) {
 	return yakRecord, err
 }
 
-func GetYakTotal() int {
-	var count int
-	db.Model(&YakRecord{}).Count(&count)
-	return count
+func GetBirthTimeByYakId(yakId int) (string, error) {
+	var yak YakRecord
+	err := db.Select("birth_time").Where("yak_id = ?", yakId).First(&yak).Error
+	return yak.BirthTime, err
 }

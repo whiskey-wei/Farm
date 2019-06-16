@@ -20,7 +20,7 @@ func GetYaks(c *gin.Context) {
 	data := make(map[string]interface{})
 
 	data["list"], _ = model.GetYakRecords(util.GetPage(c), setting.PageSize)
-	data["total"] = model.GetYakTotal()
+	data["total"] = model.GetYakRecordTotal()
 
 	c.JSON(http.StatusOK, gin.H{
 		"code": 200,

@@ -51,5 +51,11 @@ func DeleteMilkProductionRecord(id int) error {
 func GetMilkProductionRecordTotal() int {
 	var count int
 	db.Model(&MilkProductionRecord{}).Count(&count)
-	return  count
+	return count
+}
+
+func GetSumMilkProductionByCowId(cowId int) (float64, error) {
+	var milkProduction MilkProductionRecord
+	err := db.Select("sum_production").Where("cow_id = ?", cowId).Last(&milkProduction).Error
+	return milkProduction.SumProduction, err
 }

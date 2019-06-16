@@ -23,6 +23,12 @@ type CalveRecord struct {
 	PlacentaTime   string  `json:"placenta_time"`    //胎盘排出时间
 } //产犊记录
 
+func GetCalveCountByCowId(cowId int) int {
+	var count int
+	db.Model(&CalveRecord{}).Where("cow_id = ?", cowId).Count(&count)
+	return count
+}
+
 func ExistCalveByCowID(id int) bool {
 	var calverecord CalveRecord
 	db.Select("cow_id").Where("cow_id = ?", id).First(&calverecord)
